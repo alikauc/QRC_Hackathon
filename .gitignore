@@ -2,3 +2,15 @@ Classical_Reservoir_learning/
 LSTM/
 output.csv
 predict_results.csv
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/

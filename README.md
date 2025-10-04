@@ -12,6 +12,7 @@ The project implements and compares three approaches for realized volatility for
 ## Repository Structure
 
 - **`Time_series.jl`** - Core Julia implementation of the Quantum Reservoir Computing model
+- **`time_series.py`** - Python conversion of the Julia implementation (new!)
 - **`Time_serial_Finance_regression.ipynb`** - Main notebook demonstrating the QRC approach for financial time series
 - **`Reservoir_Learning.ipynb`** - Quantum reservoir learning experiments and visualizations
 - **`classical_reservoir.ipynb`** - Classical reservoir computing baseline implementation
@@ -19,6 +20,7 @@ The project implements and compares three approaches for realized volatility for
 - **`Data.CSV`** - Financial time series data with macroeconomic features
 - **`predict_result.csv`** - Model predictions output
 - **`coeff_10.jld2`** - Pre-computed coefficients for the quantum reservoir
+- **`requirements.txt`** - Python package dependencies
 
 ## Data Features
 
@@ -44,12 +46,22 @@ The dataset includes the following features for realized volatility forecasting:
 - `CUDA` - GPU acceleration
 - `Statistics`, `StatsBase`, `LinearAlgebra` - Mathematical operations
 
-### Python Packages (for notebooks)
+### Python Packages
 - `numpy` - Numerical computing
+- `scipy` - Scientific computing (eigenvalues, linear algebra)
 - `pandas` - Data manipulation
 - `torch` - PyTorch for LSTM
 - `reservoirpy` - Classical reservoir computing
 - `matplotlib` - Visualization
+
+#### Optional Python Packages
+- `cupy` - GPU acceleration (CUDA)
+- `qiskit` / `cirq` / `pennylane` / `qutip` - Quantum computing libraries (for actual quantum operations)
+
+Install Python dependencies:
+```bash
+pip install -r requirements.txt
+```
 
 ## Key Methods
 
@@ -69,6 +81,42 @@ The QRC implementation includes:
 - **QLIKE** - Quasi-Likelihood loss for volatility forecasting
 
 ## Usage
+
+### Python Implementation
+
+The Python version (`time_series.py`) provides the same functionality as the Julia implementation with standard Python libraries:
+
+```python
+# Import the module
+from time_series import *
+
+# Test utility functions
+data = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
+normalized = normalization(data, -1, 1)
+print(f"Normalized data: {normalized}")
+
+# Generate coupling matrix for quantum reservoir
+nqubit = 4
+J = 1.0
+ps = coeff_matrix(nqubit, J)
+
+# Evaluate predictions
+predictions = np.array([0.1, 0.2, 0.15, 0.25, 0.3])
+actuals = np.array([0.12, 0.18, 0.16, 0.24, 0.28])
+print(f"MSE: {MSE(predictions, actuals):.6f}")
+print(f"RMSE: {RMSE(predictions, actuals):.6f}")
+print(f"Hit rate: {hitrate(predictions, actuals):.4f}")
+```
+
+**Important Note:** The quantum computing operations in the Python version are placeholder implementations. For actual quantum reservoir computing with Python, you need to integrate with a quantum computing library such as:
+- **Qiskit** (IBM Quantum): https://qiskit.org/
+- **Cirq** (Google): https://quantumai.google/cirq
+- **PennyLane** (Xanadu): https://pennylane.ai/
+- **QuTiP** (Quantum Toolbox): https://qutip.org/
+
+The utility functions, evaluation metrics, and data preprocessing functions are fully functional.
+
+### Julia Implementation (Original)
 
 ### Running the Quantum Reservoir Model
 
