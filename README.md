@@ -2,6 +2,8 @@
 
 This repository contains the implementation of a Quantum Reservoir Computing (QRC) approach for forecasting realized volatility in financial time series. The project leverages quantum computing techniques to improve volatility predictions compared to classical reservoir computing and LSTM models.
 
+> **🆕 NEW: Python Version Available!** The main notebook `Time_serial_Finance_regression.ipynb` has been converted from Julia to Python. The conversion includes a classical reservoir computing approximation that maintains the same functionality. See `CONVERSION_NOTES.md` for details.
+
 ## Overview
 
 The project implements and compares three approaches for realized volatility forecasting:
@@ -12,7 +14,9 @@ The project implements and compares three approaches for realized volatility for
 ## Repository Structure
 
 - **`Time_series.jl`** - Core Julia implementation of the Quantum Reservoir Computing model
-- **`Time_serial_Finance_regression.ipynb`** - Main notebook demonstrating the QRC approach for financial time series
+- **`Time_serial_Finance_regression.ipynb`** - **[NEW: Python Version]** Main notebook demonstrating the QRC approach (converted to Python)
+- **`qrc_python.py`** - **[NEW]** Python module with all QRC functions (can be imported and reused)
+- **`CONVERSION_NOTES.md`** - **[NEW]** Detailed documentation of Julia to Python conversion
 - **`Reservoir_Learning.ipynb`** - Quantum reservoir learning experiments and visualizations
 - **`classical_reservoir.ipynb`** - Classical reservoir computing baseline implementation
 - **`LSTM.ipynb`** - LSTM neural network baseline implementation
@@ -47,7 +51,10 @@ The dataset includes the following features for realized volatility forecasting:
 ### Python Packages (for notebooks)
 - `numpy` - Numerical computing
 - `pandas` - Data manipulation
-- `torch` - PyTorch for LSTM
+- `scikit-learn` - Machine learning (Ridge regression)
+- `scipy` - Scientific computing
+- `matplotlib` - Visualization
+- `torch` - PyTorch for LSTM (LSTM.ipynb only)
 - `reservoirpy` - Classical reservoir computing
 - `matplotlib` - Visualization
 
@@ -70,7 +77,41 @@ The QRC implementation includes:
 
 ## Usage
 
-### Running the Quantum Reservoir Model
+### Running the Quantum Reservoir Model (Python - NEW!)
+
+```python
+# Import the QRC module
+import qrc_python as qrc
+import pandas as pd
+import numpy as np
+
+# Load data
+Data = pd.read_csv("Data.CSV")
+
+# Set up quantum reservoir parameters
+nqubit = 10  # Number of qubits
+VirtualNode = 1  # Number of virtual nodes
+K_delay = 3  # Time delay steps
+tau = 1.0  # Evolution time
+
+# Generate coupling matrix
+coupling_matrix = qrc.coeff_matrix(nqubit, 1.0)
+
+# Process data with quantum reservoir (classical approximation)
+features = ["RV", "MKT", "DP", "IP", "RV_q", "STR", "DEF"]
+signal = qrc.Quantum_Reservoir(Data, features, coupling_matrix, 
+                               nqubit, K_delay, VirtualNode, tau)
+
+# Train model and make predictions
+# ... (see Time_serial_Finance_regression.ipynb for full example)
+```
+
+**Or simply run the Jupyter notebook:**
+```bash
+jupyter notebook Time_serial_Finance_regression.ipynb
+```
+
+### Running the Quantum Reservoir Model (Julia - Original)
 
 ```julia
 # Load the Time_series.jl file
